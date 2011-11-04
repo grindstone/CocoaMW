@@ -1,0 +1,13 @@
+project.xcworkspace
+xcuserdata
+*.mode1v3
+*.pbxuser
+.DS_Store
+.svn
+
+# Test files used while developing
+CocoaMW-Prefix.pch
+CocoaMW.xcodeproj
+CocoaMWTests.h
+CocoaMWTests.m
+main.m

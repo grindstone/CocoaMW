@@ -1,0 +1,112 @@
+CocoaMW is a Objective-C (Cocoa) library for accessing [MediaWiki's API][mediawiki-api].
+
+Supposed to be a part of [WikiShoot][wikishoot] (the iOS app for making photos and uploading them to Wikimedia Commons) which, in turn, is my entry to the [October 2011 Coding Challenge][october-2011-coding-challenge-mobile].
+
+# Completeness
+
+At the time of writing (Nov 4, 2011), simple direct queries work fine, but file uploads and other *helpers* are not implemented / tested / need some work.
+
+# Dependencies
+
+- [ASI-HTTP-Request][asi-http-request]
+- [JSONKit][jsonkit]
+
+# Setup instructions
+
+- Clone this repository (or add it as a submodule).
+- Add all files starting with `MW*` to your project (don't mind the others).
+- Don't forget the dependencies:
+	- Clone [ASI-HTTP-Request][asi-http-request] and add it to your project according to the [instructions][asi-http-request-instructions].
+	- Clone [JSONKit][jsonkit] and simply add `JSONKit.h` and `JSONKit.m` to your project.
+
+# Usage example
+
+## `Example.h`
+
+	#import "MW.h"
+	
+	@interface Example : NSObject <MWClientDelegate> {
+		
+		@private
+		
+		// MediaWiki API client
+		MWClient *mwClient;
+		
+	}
+	
+	- (void)startExampleRequest;
+	
+	// MWClientDelegate methods (there are some more, see MWClientDelegate.h)
+	- (void)mwClient:(MWClient *)client
+	didSucceedCallingAPIWithRequest:(MWAPIRequest *)request
+			 results:(NSDictionary *)results;
+	- (void)mwClient:(MWClient *)client
+	didFailCallingAPIWithRequest:(MWAPIRequest *)request
+			   error:(NSError *)error;
+	
+	@end
+
+## `Example.m`
+
+	#import "Example.h"
+	
+	@implementation Example
+	
+	- (id)init {
+		
+		if ((self = [super init])) {
+			
+			// Initialize MediaWiki's client
+			mwClient = [[MWClient alloc] initWithApiURL:@"http://en.wikipedia.org/w/api.php"
+											   delegate:self];
+		}
+		
+		return self;
+	}
+	
+	- (void)dealloc {
+		
+		[mwClient release]; mwClient = nil;
+		[super dealloc];
+	}
+	
+	- (void)startExampleRequest {
+		
+		// Create a request to fetch article content plus image list
+		MWAPIRequest *request = [MWAPIRequest requestWithAction:@"query"];
+		
+		// If you pass an array instead of string, it gets con|cat|ena|ted
+		[request setParameter:[NSArray arrayWithObjects:@"Apple", @"Pear", @"Pineapple", nil] forKey:@"titles"];
+		[request setParameter:[NSArray arrayWithObjects:@"images", @"revisions", nil] forKey:@"prop"];
+		
+		[request setParameter:@"true" forKey:@"redirects"];
+		[request setParameter:@"max" forKey:@"imlimit"];
+		[request setParameter:@"content" forKey:@"rvprop"];
+
+		// Pass the request to the API
+		[mwClient callAPIWithRequest:request];
+	}
+	
+	- (void)mwClient:(MWClient *)client
+	didSucceedCallingAPIWithRequest:(MWAPIRequest *)request
+			 results:(NSDictionary *)results {
+		
+		NSLog(@"Success; results: %@", results);
+	}
+	
+	- (void)mwClient:(MWClient *)client
+	didFailCallingAPIWithRequest:(MWAPIRequest *)request
+			   error:(NSError *)error {
+				
+		NSLog(@"Failure; error: %@", error);
+	}
+	
+	@end
+
+
+[mediawiki-api]: http://www.mediawiki.org/wiki/API:Main_page
+[wikishoot]: https://github.com/pypt/WikiShoot
+[october-2011-coding-challenge-mobile]: http://www.mediawiki.org/wiki/October_2011_Coding_Challenge/Mobile
+[asi-http-request]: https://github.com/pokeb/asi-http-request
+[asi-http-request-instructions]: http://allseeing-i.com/ASIHTTPRequest/Setup-instructions
+[jsonkit]: https://github.com/johnezang/JSONKit
