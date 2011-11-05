@@ -39,7 +39,7 @@
 
 - (void)requestStarted:(ASIHTTPRequest *)request {
 	
-	MWLOG(@"requestStarted: %@", request);
+	//MWLOG(@"requestStarted: %@", request);
 	
 	if (delegate && [delegate respondsToSelector:@selector(mwClient:didStartCallingAPIWithRequest:)]) {
 		
@@ -51,7 +51,7 @@ didStartCallingAPIWithRequest:currentAPIRequest];
 
 - (void)request:(ASIHTTPRequest *)request didReceiveBytes:(long long)bytes {
 	
-	MWLOG(@"request: %@ didReceiveBytes: %d", request, bytes);
+	//MWLOG(@"request: %@ didReceiveBytes: %d", request, bytes);
 	
 	if (delegate && [delegate respondsToSelector:@selector(mwClient:receivedBytes:outOfBytes:withRequest:)]) {
 		
@@ -68,7 +68,7 @@ didStartCallingAPIWithRequest:currentAPIRequest];
 
 - (void)request:(ASIHTTPRequest *)request didSendBytes:(long long)bytes {
 	
-	MWLOG(@"request: %@ didSendBytes: %d", request, bytes);
+	//MWLOG(@"request: %@ didSendBytes: %d", request, bytes);
 
 	if (delegate && [delegate respondsToSelector:@selector(mwClient:sentBytes:outOfBytes:withRequest:)]) {
 		
@@ -266,7 +266,7 @@ didFailCallingAPIWithRequest:apiRequest
 
 - (void)callAPIWithRequest:(MWAPIRequest *)request {
 	
-	MWLOG(@"I'm about to call API with request: %@", request);
+	//MWLOG(@"I'm about to call API with request: %@", request);
 	
 	if (! apiURL) {
 		MWWARN(@"API URL is nil");
