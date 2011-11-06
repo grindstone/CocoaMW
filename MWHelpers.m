@@ -116,7 +116,7 @@
 		
 		NSArray *pageImages = [page objectForKey:@"images"];
 		if (! pageImages) {
-			MWWARN(@"no 'images' key in 'page'");
+			//MWWARN(@"no 'images' key in 'page'");
 			// Don't err, just skip
 			continue;
 		}

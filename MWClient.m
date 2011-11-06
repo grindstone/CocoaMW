@@ -110,18 +110,15 @@ didStartCallingAPIWithRequest:currentAPIRequest];
 		[self requestFailed:request];
 		return;
 	}
-	
-	MWAPIRequest *apiRequest = [[currentAPIRequest retain] autorelease];	
-	MW_RELEASE_SAFELY(currentAPIRequest);
-	
+		
 	if (delegate && [delegate respondsToSelector:@selector(mwClient:didSucceedCallingAPIWithRequest:results:)]) {
 		
 		[delegate mwClient:self
-didSucceedCallingAPIWithRequest:apiRequest
+didSucceedCallingAPIWithRequest:currentAPIRequest
 				   results:(NSDictionary *)responseJSON];
 	}
 	
-	MW_RELEASE_SAFELY(currentAPIRequest);
+	//MW_RELEASE_SAFELY(currentAPIRequest);
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
@@ -132,8 +129,8 @@ didSucceedCallingAPIWithRequest:apiRequest
 		networkOperationIsInProgress = NO;
 	}
 	
-	MWAPIRequest *apiRequest = [[currentAPIRequest retain] autorelease];	
-	MW_RELEASE_SAFELY(currentAPIRequest);
+	MWAPIRequest *apiRequest = [currentAPIRequest retain];
+	//MW_RELEASE_SAFELY(currentAPIRequest);
 	
 	if (delegate && [delegate respondsToSelector:@selector(mwClient:didFailCallingAPIWithRequest:error:)]) {
 		
@@ -230,14 +227,14 @@ didFailCallingAPIWithRequest:apiRequest
 	
 	if (httpRequest) {
 		[httpRequest clearDelegatesAndCancel];
-		MW_RELEASE_SAFELY(httpRequest);
+		//MW_RELEASE_SAFELY(httpRequest);
 	}
 	
 	// Remove cookies
 	[ASIHTTPRequest setSessionCookies:nil];
 	
 	if (currentAPIRequest) {
-		MW_RELEASE_SAFELY(currentAPIRequest);
+		//MW_RELEASE_SAFELY(currentAPIRequest);
 	}
 		
 	[super dealloc];
@@ -355,7 +352,7 @@ didFailCallingAPIWithRequest:apiRequest
 			networkOperationIsInProgress = NO;
 		}
 		if (currentAPIRequest) {
-			MW_RELEASE_SAFELY(currentAPIRequest)
+			//MW_RELEASE_SAFELY(currentAPIRequest)
 		}
 	}
 	
