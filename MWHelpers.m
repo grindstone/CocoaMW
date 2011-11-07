@@ -114,19 +114,12 @@
 		// Page images
 		//
 		
-		NSArray *pageImages = [page objectForKey:@"images"];
-		if (! pageImages) {
-			//MWWARN(@"no 'images' key in 'page'");
-			// Don't err, just skip
-			continue;
-		}
-		
 		// Article doesn't have images at all -- write this down, don't check anything else
-		if ([pageImages count] == 0) {
+		NSArray *pageImages = [page objectForKey:@"images"];
+		if ((! pageImages) || [pageImages count] == 0) {
 			[articlesThatDoNotHaveImages addObject:pageTitle];
 			continue;
-		}
-				
+	
 		
 		//
 		// Page content
