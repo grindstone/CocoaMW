@@ -234,7 +234,31 @@
 		MWWARN(@"Basename is nil or empty");
 		return;
 	}
+	
+	// Store data to temp. directory
+	NSString *tempFilename = [MWAPIRequest temporaryFilenameForImageWithBasename:basename];
+	if (! [attachmentData writeToFile:tempFilename
+						   atomically:YES]) {
+		
+		MWWARN(@"Unable to store file data to temp. file '%@'", tempFilename);
+		return;
+	}
+	
+	[self setAttachmentPath:tempFilename forKey:key];
+}
 
+- (void)removeAttachmentForKey:(NSString *)key {
+	
+	if (! key) {
+		MWWARN(@"Key is nil");
+		return;
+	}
+	
+	[attachments removeObjectForKey:key];
+}
+
++ (NSString *)temporaryFilenameForImageWithBasename:(NSString *)basename {
+	
 	// Create a temp. directory
 	NSString *tempDirectoryTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"WikiShoot.XXXXXX"];
 	const char *tempDirectoryTemplateCString = [tempDirectoryTemplate fileSystemRepresentation];
@@ -259,26 +283,8 @@
 	
 	NSString *tempFilename = [tempDirectoryPath stringByAppendingPathComponent:basename];
 	MWLOG(@"Will store file to: %@", tempFilename);
-	
-	// Store data to temp. directory
-	if (! [attachmentData writeToFile:tempFilename
-						   atomically:YES]) {
-		
-		MWWARN(@"Unable to store file data to temp. file '%@'", tempFilename);
-		return;
-	}
-	
-	[self setAttachmentPath:tempFilename forKey:key];
-}
 
-- (void)removeAttachmentForKey:(NSString *)key {
-	
-	if (! key) {
-		MWWARN(@"Key is nil");
-		return;
-	}
-	
-	[attachments removeObjectForKey:key];
+	return tempFilename;
 }
 
 @end

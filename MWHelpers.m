@@ -119,7 +119,7 @@
 		if ((! pageImages) || [pageImages count] == 0) {
 			[articlesThatDoNotHaveImages addObject:pageTitle];
 			continue;
-	
+		}
 		
 		//
 		// Page content

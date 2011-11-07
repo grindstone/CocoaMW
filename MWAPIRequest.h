@@ -47,4 +47,7 @@
 - (void)setAttachmentData:(NSData *)attachmentData withBasename:(NSString *)basename forKey:(NSString *)key;
 - (void)removeAttachmentForKey:(NSString *)key;
 
+// Returns temporary filename to store an image
++ (NSString *)temporaryFilenameForImageWithBasename:(NSString *)basename;
+
 @end
