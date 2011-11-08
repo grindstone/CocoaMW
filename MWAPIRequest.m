@@ -1,9 +1,17 @@
 //
-//  MWAPIRequest.m
-//  WikiShoot
+// Copyright 2011 Linas Valiukas
 //
-//  Created by Linas Valiukas on 2011-10-26.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 
 #import "MWAPIRequest.h"
@@ -234,7 +242,31 @@
 		MWWARN(@"Basename is nil or empty");
 		return;
 	}
+	
+	// Store data to temp. directory
+	NSString *tempFilename = [MWAPIRequest temporaryFilenameForImageWithBasename:basename];
+	if (! [attachmentData writeToFile:tempFilename
+						   atomically:YES]) {
+		
+		MWWARN(@"Unable to store file data to temp. file '%@'", tempFilename);
+		return;
+	}
+	
+	[self setAttachmentPath:tempFilename forKey:key];
+}
 
+- (void)removeAttachmentForKey:(NSString *)key {
+	
+	if (! key) {
+		MWWARN(@"Key is nil");
+		return;
+	}
+	
+	[attachments removeObjectForKey:key];
+}
+
++ (NSString *)temporaryFilenameForImageWithBasename:(NSString *)basename {
+	
 	// Create a temp. directory
 	NSString *tempDirectoryTemplate = [NSTemporaryDirectory() stringByAppendingPathComponent:@"WikiShoot.XXXXXX"];
 	const char *tempDirectoryTemplateCString = [tempDirectoryTemplate fileSystemRepresentation];
@@ -259,26 +291,8 @@
 	
 	NSString *tempFilename = [tempDirectoryPath stringByAppendingPathComponent:basename];
 	MWLOG(@"Will store file to: %@", tempFilename);
-	
-	// Store data to temp. directory
-	if (! [attachmentData writeToFile:tempFilename
-						   atomically:YES]) {
-		
-		MWWARN(@"Unable to store file data to temp. file '%@'", tempFilename);
-		return;
-	}
-	
-	[self setAttachmentPath:tempFilename forKey:key];
-}
 
-- (void)removeAttachmentForKey:(NSString *)key {
-	
-	if (! key) {
-		MWWARN(@"Key is nil");
-		return;
-	}
-	
-	[attachments removeObjectForKey:key];
+	return tempFilename;
 }
 
 @end

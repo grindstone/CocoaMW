@@ -1,9 +1,17 @@
 //
-//  MWClient.m
-//  WikiShoot
+// Copyright 2011 Linas Valiukas
 //
-//  Created by Linas Valiukas on 2011-10-26.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 
 #import "MWClient.h"
@@ -110,18 +118,15 @@ didStartCallingAPIWithRequest:currentAPIRequest];
 		[self requestFailed:request];
 		return;
 	}
-	
-	MWAPIRequest *apiRequest = [[currentAPIRequest retain] autorelease];	
-	MW_RELEASE_SAFELY(currentAPIRequest);
-	
+		
 	if (delegate && [delegate respondsToSelector:@selector(mwClient:didSucceedCallingAPIWithRequest:results:)]) {
 		
 		[delegate mwClient:self
-didSucceedCallingAPIWithRequest:apiRequest
+didSucceedCallingAPIWithRequest:currentAPIRequest
 				   results:(NSDictionary *)responseJSON];
 	}
 	
-	MW_RELEASE_SAFELY(currentAPIRequest);
+	//MW_RELEASE_SAFELY(currentAPIRequest);
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request {
@@ -132,8 +137,8 @@ didSucceedCallingAPIWithRequest:apiRequest
 		networkOperationIsInProgress = NO;
 	}
 	
-	MWAPIRequest *apiRequest = [[currentAPIRequest retain] autorelease];	
-	MW_RELEASE_SAFELY(currentAPIRequest);
+	MWAPIRequest *apiRequest = [currentAPIRequest retain];
+	//MW_RELEASE_SAFELY(currentAPIRequest);
 	
 	if (delegate && [delegate respondsToSelector:@selector(mwClient:didFailCallingAPIWithRequest:error:)]) {
 		
@@ -230,14 +235,14 @@ didFailCallingAPIWithRequest:apiRequest
 	
 	if (httpRequest) {
 		[httpRequest clearDelegatesAndCancel];
-		MW_RELEASE_SAFELY(httpRequest);
+		//MW_RELEASE_SAFELY(httpRequest);
 	}
 	
 	// Remove cookies
 	[ASIHTTPRequest setSessionCookies:nil];
 	
 	if (currentAPIRequest) {
-		MW_RELEASE_SAFELY(currentAPIRequest);
+		//MW_RELEASE_SAFELY(currentAPIRequest);
 	}
 		
 	[super dealloc];
@@ -355,7 +360,7 @@ didFailCallingAPIWithRequest:apiRequest
 			networkOperationIsInProgress = NO;
 		}
 		if (currentAPIRequest) {
-			MW_RELEASE_SAFELY(currentAPIRequest)
+			//MW_RELEASE_SAFELY(currentAPIRequest)
 		}
 	}
 	
