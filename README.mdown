@@ -1,6 +1,6 @@
 CocoaMW is a Objective-C (Cocoa) library for accessing [MediaWiki's API][mediawiki-api].
 
-Supposed to be a part of [WikiShoot][wikishoot] (the iOS app for making photos and uploading them to Wikimedia Commons) which, in turn, is my entry to the [October 2011 Coding Challenge][october-2011-coding-challenge-mobile].
+Was a part of [WikiShoot][wikishoot] (the iOS app for making photos and uploading them to Wikimedia Commons), my entry to the [October 2011 Coding Challenge][october-2011-coding-challenge-mobile].
 
 # Completeness
 
