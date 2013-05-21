@@ -220,7 +220,7 @@
 	NSFileManager *fm = [NSFileManager defaultManager];
 	if (! ([fm fileExistsAtPath:attachmentPath] && [fm isReadableFileAtPath:attachmentPath])) {
 		MWWARN(@"Attachment at path '%@' does not exist or is not readable", attachmentPath);
-		return nil;
+		return;
 	}
 	
 	[attachments setObject:attachmentPath forKey:key];
@@ -277,7 +277,7 @@
 	if (! result) {
 		MWWARN(@"Unable to create temporary directory to store the file (#1)");
 		free(tempDirectoryNameCString);
-		return;
+		return nil;
 	}
 	
 	NSString *tempDirectoryPath = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:tempDirectoryNameCString
@@ -285,7 +285,7 @@
 	if (! tempDirectoryPath) {
 		MWWARN(@"Unable to create temporary directory to store the file (#2)");
 		free(tempDirectoryNameCString);
-		return;
+		return nil;
 	}
 	free(tempDirectoryNameCString);
 	
