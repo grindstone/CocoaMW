@@ -235,6 +235,7 @@ didFailCallingAPIWithRequest:apiRequest
 	
 	if (httpRequest) {
 		[httpRequest clearDelegatesAndCancel];
+        [httpRequest release];
 		//MW_RELEASE_SAFELY(httpRequest);
 	}
 	
@@ -306,6 +307,8 @@ didFailCallingAPIWithRequest:apiRequest
 	
 	[httpRequest setPostValue:[request action] forKey:@"action"];
 	[httpRequest setPostValue:@"json" forKey:@"format"];
+    
+    [httpRequest retain];
 	
 #if TARGET_OS_IPHONE
 	[httpRequest setShouldContinueWhenAppEntersBackground:YES];
